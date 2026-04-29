@@ -115,8 +115,22 @@ classdef ServiceQueue < handle
             % Initialize the private properties of this instance.
             obj.InterArrivalDist = ...
                 makedist("Exponential", mu=1/obj.ArrivalRate);
-            obj.ServiceDist = ...
-                makedist("Exponential", mu=1/obj.DepartureRate);
+         
+            
+            
+        % obj.ServiceDist = ...
+        %  makedist("Exponential", mu=1/obj.DepartureRate);
+     
+           
+         serviceMean = 1/obj.DepartureRate;
+         serviceShape = 2;
+         serviceScale = serviceMean / serviceShape;
+
+         obj.ServiceDist = ...
+         makedist("Gamma", a = serviceShape, b = serviceScale);
+          
+
+
             obj.ServerAvailable = repelem(true, obj.NumServers);
             obj.Servers = cell([1, obj.NumServers]);
             % Events has to be initialized in the constructor.
